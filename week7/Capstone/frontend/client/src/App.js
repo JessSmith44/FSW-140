@@ -5,7 +5,7 @@ import './App.css';
 
 function App(){
   
-const [Posts, setPost] = useState(['']); 
+const [Posts, setPost] = useState([]); 
 const [disableBtn, setDisableBtn] = useState(false);
 
   const addPost = text =>{

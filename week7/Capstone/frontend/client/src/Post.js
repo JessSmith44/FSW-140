@@ -10,19 +10,18 @@ function Post({Post, deletePost, complete, edit, addPost}){
     
 
     const handleChange = (e) => {
-        var {value, title, description, img} = e.target
+        var {value, Title, Description, ImgURL} = e.target
     
         setInputs({
           ...inputs,
-          [title]: value,
-          [description] : value,
-          [img]: value
+          [Title]: value,
+          [Description] : value,
+          [ImgURL]: value
         })
       }
       const handleSubmit = (update) => {
         edit(update, Post.id)
         setEditToggle(prevToggle => !prevToggle)
-        // console.log(addPosts)
       }
 
 

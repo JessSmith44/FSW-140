@@ -8,7 +8,7 @@ function PostList(props) {
       <h1>Welcome to PhotoShare!</h1>
       < PostForm addPost={props.addPost} />
       <ul className="Post-list stack-large stack exception" aria-labelledby="list-heading">
-        {props.Post.map((Post) => {
+        {props.Post?.map((Post) => {
           return (
 
         // Think about useEffect and where it should go.
