@@ -2,6 +2,9 @@ import './App.css'
 import React, { useState, useEffect } from 'react';
 import PostList from'./PostList';
 import './App.css';
+import { Route, Routes } from 'react-router-dom';
+import Home from '/Home.js';
+import Nav from './Nav';
 
 function App(){
   
@@ -29,7 +32,10 @@ const [disableBtn, setDisableBtn] = useState(false);
 
   return(
     <div>
-      < PostList Posts={Posts} key={Posts.id} deletePost={deletePost} addPost={addPost} editPosts={editPosts} />
+      <Nav></Nav>
+        <Routes>
+          <Route path='/*' element={<Home/>} /> </Routes>
+          <Route path='/GetPosts' element={< PostList Posts={Posts} key={Posts.id} deletePost={deletePost} addPost={addPost} editPosts={editPosts} />} />
     </div>
   )
 }

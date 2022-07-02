@@ -11,7 +11,6 @@ function PostForm({addPost, setEditToggle}) {
   const [title, setTitle] = useState("")
   const [posts, setPosts] = useState([])
 
-
   useEffect(() => {
    getData()
   }, [])
@@ -34,7 +33,7 @@ function PostForm({addPost, setEditToggle}) {
             ImgURL: res.data.secure_url
           }
          axios.post('/InsertNewRow', postInfo).then(res => {
-          // console.log(res)
+          console.log(res)
           getData()
          })
         
@@ -58,18 +57,25 @@ function PostForm({addPost, setEditToggle}) {
     setPosts(results.data)
   }
 
-  const deletePost = id => {
-    const tempPost = [...posts];
-    const newPosts = tempPost.filter((posts) => posts._id !== id);
-    setPosts(newPosts);
-  }
+  // const deletePost = id => {
+  //   axios.delete(`/DeletePosts/${PostID}`)
+  //   .then(res => {
+  //     setPosts(prevPosts => prevPosts.filter(post => post._id !== PostID))
+  //   })
+  //   const tempPost = [...posts];
+  //   const newPosts = tempPost.filter((posts) => posts._id !== id);
+  //   setPosts(newPosts);
+  // }
 
- const editPosts = (update, id) => {
-   const tempPost = [...posts];
-   const editIndex = tempPost.findIndex(posts => posts.id === id); //finding specific index of selected Post
-   tempPost[editIndex].text = update;
-   setPosts(tempPost);
- }
+  // const editItem = (updates, itemId) => {
+  //   axios.put(`/recycledItems/${itemId}`, updates)
+  //   .then(res => {
+  //     setRecycle(prevItems => [...prevItems].map(item => {
+  //       return(item._id === itemId ? res.data : item)}))
+  //   })
+  //   .catch(err => console.log(err))
+  // }
+
 
   return (
     <div className="postForm">
@@ -104,8 +110,8 @@ function PostForm({addPost, setEditToggle}) {
             <img src={post.ImgURL} alt={post.Description}></img>
             <figcaption>{post.Title}</figcaption>
             <p>{post.Description}</p>
-            <button className="deletebtn" onClick={() => deletePost(post.id)}>X</button>
-            <button className="editbtn" onClick={() => setEditToggle()}> Edit </button>
+            {/* <button className="deletebtn" onClick={() => deletePost(post.id)}>X</button>
+            <button className="editbtn" onClick={() => setEditToggle()}> Edit </button> */}
           </figure>
           </div>
           )
