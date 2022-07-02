@@ -1,4 +1,4 @@
-import Feed from './Feed';
+import PostList from "../PostList"
 
 const Home = ({ posts, searchResults }) => {
     
@@ -6,9 +6,9 @@ const Home = ({ posts, searchResults }) => {
         <main className="Home">
                 <>
             {searchResults.length ? 
-            <Feed posts={searchResults} /> :
+            <PostList posts={searchResults} /> :
                 posts.length ? 
-                <Feed posts={posts} />
+                <PostList posts={posts} />
              : 
                 <p style={{ marginTop: '2rem' }}>
                     No posts to display.

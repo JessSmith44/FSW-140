@@ -53,7 +53,7 @@ function PostForm({addPost, setEditToggle}) {
     //endpoints are good, why....?
  const getData = async() => {
     let results = await axios.get('/GetPosts')
-    console.log(results.data)
+    // console.log(results.data)
     setPosts(results.data)
   }
 
