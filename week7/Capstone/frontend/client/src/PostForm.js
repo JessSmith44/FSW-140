@@ -2,47 +2,81 @@ import { useState, useEffect } from 'react'
 import './App.css'
 import axios from 'axios'
 
-function PostForm({addPost}) {
+
+function PostForm({addPost, setEditToggle}) {
   const initalInputs = {text: ""}
   const [inputs, setInputs] = useState(initalInputs);
-  const [file, setFile] = useState()
+  const [file, setFile] = useState('')
   const [description, setDescription] = useState("")
+  const [title, setTitle] = useState("")
   const [posts, setPosts] = useState([])
 
-  // useEffect(() => {
-  //   (async() => {
-  //     const result = await axios.get('/GetPosts')
-  //     setPosts(result.data.posts)
-  //   }) ()
-  // }, [])
 
-  // const submit = async event => {
-  //   event.preventDefault()
-  //   const data = new FormData()
-  //   data.append('image', file)
-  //   data.append('description', description)
-  //   const result = await axios.post('/InsertNewRow', data)
-  //   setPosts([result.data, ...posts])
-  // }
+  useEffect(() => {
+   getData()
+  }, [])
 
-  const submit = (newItem) => {
-    axios.post('/sqlRoutes', newItem)
-      .then(res => {
-        setPosts(prevItems => [...prevItems, res.data])
+  const handleSubmit = async event => {
+    event.preventDefault()
+    const cloud_name = 'dwthknilv'
+    const preset = 'presetCloud'
+    const url = `https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`;
+    // console.log(file)
+    // console.log(file[0])
+      const data = new FormData()
+      data.append("file", file[0]);
+      data.append("upload_preset", preset);
+    axios.post(url, data).then(res => {
+      // console.log(res)
+        const postInfo = {
+            Title: title,
+            Description: description,
+            ImgURL: res.data.secure_url
+          }
+         axios.post('/InsertNewRow', postInfo).then(res => {
+          // console.log(res)
+          getData()
+         })
+        
       })
-      .catch(err => console.log(err))
+
+  
+    // fetch('https://api.cloudinary.com/v1_1/dwthknilv/image/upload', {
+    //   method: 'POST',
+    //   body: data
+    // })
+    // .then(response => response.json())
+    // .then(data => console.log(data));
+  } 
+  
+  //why is this line throwing an error? 
+    //how is insert new row throwing a cannot proxy error 500? 
+    //endpoints are good, why....?
+ const getData = async() => {
+    let results = await axios.get('/GetPosts')
+    console.log(results.data)
+    setPosts(results.data)
   }
-  const handleSubmit= (e) => {
-    e.preventDefault();
-    submit(inputs, file, description, posts)
-    setInputs(initalInputs)
+
+  const deletePost = id => {
+    const tempPost = [...posts];
+    const newPosts = tempPost.filter((posts) => posts._id !== id);
+    setPosts(newPosts);
   }
+
+ const editPosts = (update, id) => {
+   const tempPost = [...posts];
+   const editIndex = tempPost.findIndex(posts => posts.id === id); //finding specific index of selected Post
+   tempPost[editIndex].text = update;
+   setPosts(tempPost);
+ }
 
   return (
     <div className="postForm">
       
       <form onSubmit={handleSubmit}>
         <input 
+        onChange={e => setTitle(e.target.value)}
           type={'text'} 
           name={"title"} 
           placeholder={"Title"} 
@@ -56,20 +90,26 @@ function PostForm({addPost}) {
 
         <input
           filename={file} 
-          onChange={e => setFile(e.target.files[0])} 
+          onChange={e => setFile(e.target.files)} 
           type="file" 
           accept="image/*"
         ></input>
         
         <button type="submit">Submit</button>
       </form>
-      <main>
+      <main> 
         {posts.map(post => (
-          <figure key={post.id}>
-            <img src={post.image_url}></img>
-            <figcaption>{post.description}</figcaption>
+        <div className='display' key={post.PostID}>
+          <figure >
+            <img src={post.ImgURL} alt={post.Description}></img>
+            <figcaption>{post.Title}</figcaption>
+            <p>{post.Description}</p>
+            <button className="deletebtn" onClick={() => deletePost(post.id)}>X</button>
+            <button className="editbtn" onClick={() => setEditToggle()}> Edit </button>
           </figure>
-        ))}
+          </div>
+          )
+        )}
       </main>
     </div>
   )

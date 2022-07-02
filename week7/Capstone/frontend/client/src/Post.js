@@ -30,7 +30,7 @@ function Post({Post, deletePost, complete, edit, addPost}){
             
             { !editToggle ? 
             <>
-            <PostForm addPost={ handleSubmit }/>
+            <PostForm addPost={ handleSubmit } editPost={setEditToggle}/>
             <button className='close-btn'
               onClick={() => setEditToggle(prevToggle => !prevToggle)}>
                 Close

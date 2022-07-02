@@ -63,5 +63,10 @@ figure{
 }
 
 img{
-  width:100%
+  width: 300px
 }
+
+/* #display{
+  height: 80px;
+  background-color: red;
+} */
